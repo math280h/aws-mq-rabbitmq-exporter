@@ -1,0 +1,4 @@
+prometheus-client~=0.14.1
+amqpstorm[management]~=2.10.4
+python-decouple~=3.6
+boto3~=1.24.20
