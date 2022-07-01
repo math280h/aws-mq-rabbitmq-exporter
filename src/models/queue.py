@@ -1,18 +1,19 @@
-import logging
 from dataclasses import dataclass
-
-from amqpstorm import management
-
-from src.config import MQ_USER, MQ_PASSWORD, VERIFY_SSL
+import logging
+from types import NoneType
+from typing import Union
 
 
 @dataclass
 class Queue:
+    """Dataclass for a single queue."""
+
     name: str
     broker_id: str
     data: any
 
-    def entrypoint(self, key):
+    def entrypoint(self, key: Union[dict, str, NoneType]) -> dict:
+        """Return dict as entrypoint for get."""
         if type(key) is dict:
             return key
 
@@ -23,7 +24,10 @@ class Queue:
         else:
             return self.data[key]
 
-    def zero_get(self, key: str, entrypoint=None, return_type="int"):
+    def zero_get(
+        self, key: str, entrypoint: any = None, return_type: str = "int"
+    ) -> Union[int, str, list, dict]:
+        """Get value, if not present return the appropriate 'zero' for return type."""
         if entrypoint is not None:
             entrypoint_data = self.entrypoint(entrypoint)
             data = entrypoint_data.get(key)
@@ -60,4 +64,4 @@ class Queue:
             elif return_type == "str":
                 return str(data)
             else:
-                return
+                return data

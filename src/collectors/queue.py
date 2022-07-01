@@ -1,14 +1,17 @@
+from collections.abc import Generator
 import logging
 
-from prometheus_client.core import GaugeMetricFamily, InfoMetricFamily
+from prometheus_client.core import InfoMetricFamily
 
-from src.helpers import get_length, zero_if_none
 from src.collectors.collector import Collector
-from src.models.broker import Broker
+from src.helpers import get_length
 
 
 class QueueCollector(Collector):
-    def collect(self):
+    """Collect data about queues in brokers."""
+
+    def collect(self) -> Generator:
+        """Collect data for Prometheus."""
         logging.debug("Defining metrics")
 
         self.labels = ["queue_name"] + self.default_labels
@@ -259,34 +262,26 @@ class QueueCollector(Collector):
 
                 avg_ack_egress_gauge.add_metric(
                     labels,
-                    zero_if_none(
-                        queue.zero_get(
-                            "avg_ack_egress_rate", entrypoint="backing_queue_status"
-                        )
+                    queue.zero_get(
+                        "avg_ack_egress_rate", entrypoint="backing_queue_status"
                     ),
                 )
                 avg_ack_ingress_gauge.add_metric(
                     labels,
-                    zero_if_none(
-                        queue.zero_get(
-                            "avg_ack_ingress_rate", entrypoint="backing_queue_status"
-                        )
+                    queue.zero_get(
+                        "avg_ack_ingress_rate", entrypoint="backing_queue_status"
                     ),
                 )
                 avg_egress_gauge.add_metric(
                     labels,
-                    zero_if_none(
-                        queue.zero_get(
-                            "avg_egress_rate", entrypoint="backing_queue_status"
-                        )
+                    queue.zero_get(
+                        "avg_egress_rate", entrypoint="backing_queue_status"
                     ),
                 )
                 avg_ingress_gauge.add_metric(
                     labels,
-                    zero_if_none(
-                        queue.zero_get(
-                            "avg_ingress_rate", entrypoint="backing_queue_status"
-                        )
+                    queue.zero_get(
+                        "avg_ingress_rate", entrypoint="backing_queue_status"
                     ),
                 )
 

@@ -8,7 +8,9 @@ from src.models.queue import Queue
 
 
 class Collector(object):
-    def __init__(self, brokers: List[Broker]):
+    """Base class for a collector with utility functions."""
+
+    def __init__(self, brokers: List[Broker]) -> None:
         logging.debug("Initializing MQCollector")
 
         self.brokers = brokers
@@ -16,18 +18,13 @@ class Collector(object):
         self.default_labels = ["broker_id", "broker_name", "broker_region"]
         self.labels = []
 
-    def define_gauge(self, *, metric: str, help_text: str):
+    def define_gauge(self, *, metric: str, help_text: str) -> GaugeMetricFamily:
+        """Defines a GaugeMetric."""
         return GaugeMetricFamily(metric, help_text, labels=self.labels)
 
     @staticmethod
-    def zero_if_none(value: any):
-        if value is None:
-            return 0
-        else:
-            return value
-
-    @staticmethod
     def gather_queue_data(broker: Broker) -> List[Queue]:
+        """Gather data about queues in the broker."""
         queues = []
 
         logging.debug("Gathering queue data")

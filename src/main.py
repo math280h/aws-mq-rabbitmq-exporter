@@ -1,17 +1,24 @@
 import logging
-import time
 import re
+import time
 
 import boto3
 from prometheus_client import start_http_server
 from prometheus_client.core import REGISTRY
 
 from src.collectors.queue import QueueCollector
+from src.config import (
+    AWS_ACCESS_KEY_ID,
+    AWS_REGION,
+    AWS_SECRET_ACCESS_KEY,
+    BROKER_FILTER,
+    LOG_LEVEL,
+)
 from src.models.broker import Broker
-from src.config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, BROKER_FILTER, LOG_LEVEL, AWS_REGION
 
 
-def start():
+def start() -> None:
+    """Boostrap application."""
     log_level = logging.WARNING
     if LOG_LEVEL is not None:
         if LOG_LEVEL.lower() == "debug":
@@ -33,7 +40,7 @@ def start():
         "mq",
         aws_access_key_id=AWS_ACCESS_KEY_ID,
         aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        region_name=AWS_REGION
+        region_name=AWS_REGION,
     )
     response = client.list_brokers(MaxResults=100)
 
