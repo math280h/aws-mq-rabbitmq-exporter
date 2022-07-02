@@ -12,7 +12,11 @@ from src.config import (
     AWS_REGION,
     AWS_SECRET_ACCESS_KEY,
     BROKER_FILTER,
+    BROKER_FILTER_KEY,
+    HTTP_PORT,
+    LOG_FORMAT,
     LOG_LEVEL,
+    SCRAPE_INTERVAL,
 )
 from src.models.broker import Broker
 
@@ -31,7 +35,7 @@ def start() -> None:
             log_level = logging.INFO
 
     logging.basicConfig(
-        format="%(levelname)s:%(asctime)s:%(message)s",
+        format=LOG_FORMAT,
         encoding="utf-8",
         level=log_level,
     )
@@ -49,7 +53,7 @@ def start() -> None:
     brokers = []
 
     for broker in response["BrokerSummaries"]:
-        if broker_filter.match(broker["BrokerName"]) is not None:
+        if broker_filter.match(broker[BROKER_FILTER_KEY]) is not None:
             print(broker)
             brokers.append(
                 Broker(
@@ -65,11 +69,11 @@ def start() -> None:
 
     REGISTRY.register(QueueCollector(brokers))
 
-    start_http_server(8000)
+    start_http_server(HTTP_PORT)
 
     while True:
         logging.debug("Waiting for timeout")
-        time.sleep(15)
+        time.sleep(SCRAPE_INTERVAL)
 
 
 if __name__ == "__main__":

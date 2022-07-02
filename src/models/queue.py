@@ -17,12 +17,7 @@ class Queue:
         if type(key) is dict:
             return key
 
-        val = self.data.get(key)
-
-        if val is None:
-            return {}
-        else:
-            return self.data[key]
+        return self.data.get(key, {})
 
     def zero_get(
         self, key: str, entrypoint: any = None, return_type: str = "int"
