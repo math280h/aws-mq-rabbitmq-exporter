@@ -342,7 +342,7 @@ class QueueCollector(Collector):
                                 key,
                             )
                             continue
-                        info[key] = str(value)
+                        info[key.replace("-", "_")] = str(value)
                 else:
                     logging.debug("No arguments found for queue, skipping step")
 
