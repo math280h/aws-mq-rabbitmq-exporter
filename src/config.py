@@ -1,7 +1,7 @@
 from decouple import config
 
 # Scrape Config
-SCRAPE_INTERVAL = config("SCRAPE_INTERVAL", default=15)
+SCRAPE_INTERVAL = config("SCRAPE_INTERVAL", default=15, cast=int)
 
 # AWS Config
 AWS_REGION = config("AWS_REGION")
