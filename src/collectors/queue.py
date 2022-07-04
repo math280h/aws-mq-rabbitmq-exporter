@@ -352,7 +352,6 @@ class QueueCollector(Collector):
 
         yield message_ready_gauge
         yield message_total_gauge
-        yield message_total_gauge
         yield messages_paged_out_gauge
         yield messages_persistent_gauge
         yield messages_ram_gauge
