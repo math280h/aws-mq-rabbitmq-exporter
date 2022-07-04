@@ -288,17 +288,17 @@ class QueueCollector(Collector):
                 effective_policy_definition_info.add_metric(
                     labels,
                     {
-                        "ha-mode": queue.zero_get(
-                            "ha-mode",
+                        "ha_mode": queue.zero_get(
+                            "ha_mode",
                             entrypoint="effective_policy_definition",
                             return_type="str",
                         ),
-                        "ha-sync-mode": queue.zero_get(
+                        "ha_sync_mode": queue.zero_get(
                             "ha-sync-mode",
                             entrypoint="effective_policy_definition",
                             return_type="str",
                         ),
-                        "max-length": queue.zero_get(
+                        "max_length": queue.zero_get(
                             "max-length",
                             entrypoint="effective_policy_definition",
                             return_type="str",
@@ -308,7 +308,7 @@ class QueueCollector(Collector):
                             entrypoint="effective_policy_definition",
                             return_type="str",
                         ),
-                        "queue-mode": queue.zero_get(
+                        "queue_mode": queue.zero_get(
                             "queue-mode",
                             entrypoint="effective_policy_definition",
                             return_type="str",
