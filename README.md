@@ -137,3 +137,16 @@ resource "kubernetes_service" "service" {
 ````
 </details>
 
+
+
+## Troubleshooting
+
+### Unable to get broker data from AWS
+
+This error is typically caused by invalid credentials or permissions. 
+Validate the provided AWS Credentials, region and Permissions for the Provided account.
+
+### Unable to establish API Connection
+
+This error is typically caused by security groups blocking the connection. 
+Validate wherever you are connecting from has access to port `15671` on your AWS MQ Instance

@@ -40,13 +40,18 @@ def start() -> None:
         level=log_level,
     )
 
-    client = boto3.client(
-        "mq",
-        aws_access_key_id=AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        region_name=AWS_REGION,
-    )
-    response = client.list_brokers(MaxResults=100)
+    try:
+        client = boto3.client(
+            "mq",
+            aws_access_key_id=AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+            region_name=AWS_REGION,
+        )
+        response = client.list_brokers(MaxResults=100)
+    except Exception as e:
+        logging.fatal("Unable to get broker data from AWS")
+        logging.fatal(e)
+        exit(1)
 
     broker_filter = re.compile(BROKER_FILTER)
 
@@ -54,7 +59,7 @@ def start() -> None:
 
     for broker in response["BrokerSummaries"]:
         if broker_filter.match(broker[BROKER_FILTER_KEY]) is not None:
-            print(broker)
+            logging.info("Broker matched filter: %s", broker)
             brokers.append(
                 Broker(
                     name=broker["BrokerName"],

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import logging
 
 from amqpstorm import management
 
@@ -19,9 +20,14 @@ class Broker:
 
     def get_api(self) -> management.ManagementApi:
         """Get API Client for broker."""
-        return management.ManagementApi(
-            self.get_url(),
-            MQ_USER,
-            MQ_PASSWORD,
-            verify=VERIFY_SSL,
-        )
+        try:
+            return management.ManagementApi(
+                self.get_url(),
+                MQ_USER,
+                MQ_PASSWORD,
+                verify=VERIFY_SSL,
+            )
+        except Exception as e:
+            logging.fatal("Unable to establish API Connection")
+            logging.fatal(e)
+            exit(1)
